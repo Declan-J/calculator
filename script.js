@@ -1,3 +1,21 @@
+let num1, num2 = 0;
+let operation = "";
+
+function operate(num1, num2, operation) {
+    if(operation === "+") {
+        return add(num1, num2);
+    }
+    else if(operation === "-") {
+        return subtract(num1, num2);
+    }
+    else if(operation === "*") {
+        return multiply(num1, num2);
+    }
+    else if(operation === "/") {
+        return divide(num1, num2);
+    }
+}
+
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -17,8 +35,8 @@ function divide(num1, num2) {
     else return num1 / num2;
 }
 
-console.log(add(5,10));
-console.log(subtract(5, 10));
-console.log(multiply(5, 10));
-console.log(divide(5, 10));
-console.log(divide(0, 0));
+console.log(operate(5, 10, "+"));
+console.log(operate(5, 10, "-"));
+console.log(operate(5, 10, "*"));
+console.log(operate(5, 10, "/"));
+console.log(operate(0, 0, "/"));
