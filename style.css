@@ -51,7 +51,7 @@ body {
 }
 
 .numbers {
-    width: calc(100%/3.1);
+    width: calc(100%/3.5);
     /* margin: 1px; */
 
 }
