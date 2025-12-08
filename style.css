@@ -12,6 +12,7 @@ body {
 #container {
     display: flex;
     border: 1px solid black;
+    border-radius: 6px;
     width: 600px;
     height: 800px;
 }
@@ -20,51 +21,47 @@ body {
     display: flex;
     flex: 1;
     flex-direction: column;
-    border: 1px solid red;
-    margin: 2px;
+    margin: 6px;
+    padding: 0px 4px;
 }
 
 #screen {
     display: flex;
     flex: 1;
     justify-content: end;
-    border: 1px solid blue;
-    margin: 2px;
+    align-items: center;
+    border: 1px solid black;
+    background-color: #E9FBEE;
+    margin-bottom: 10px;
+    padding-right: 4px;
 }
 
 #keypad {
     display: flex;
     flex: 9;
-    border: 1px solid green;
-    /* margin: 2px; */
 }
 
 #numbers-div {
-    border: 1px solid purple;
     display: flex;
     flex: 3;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 4px;
-    margin: 2px;
 }
 
 .numbers {
-    width: calc(100%/3.5);
-    /* margin: 1px; */
-
+    width: calc((100% - 8px)/3);
 }
 
 #operations-div {
-    border: 1px solid orange;
     display: flex;
     flex: 1;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    margin-left: 8px;
     gap: 4px;
-    margin: 2px 0px;
 }
 
 .operations {
