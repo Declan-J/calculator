@@ -1,65 +1,66 @@
-//click the digit, add the content of digit to a variable used in display
+let screenDisplay = {
 
-screenDisplay = document.querySelector("#screen");
-screenDisplay.textContent = 0;
-function updateDisplay(displayValue) {
-    screenDisplay.textContent = displayValue;
+    number1: "",
+    number2: "",
+    operation: "",
+
+    get firstNumber() {
+        return this.number1;
+    },
+
+    set firstNumber(value) {
+        this.number1 = value;
+    },
+
+    get secondNumber() {
+        return this.number2;
+    },
+
+    set secondNumber(value) {
+        this.number2 = value;
+    },
 }
 
-let chosenOperation = "";
+screenDiv = document.querySelector("#screen");
+
+function updateDisplay() {
+
+    if (screenDisplay.firstNumber === "") {
+        screenDiv.textContent = "0"
+    }
+    else {
+        screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
+    }
+}
+updateDisplay();
 
 let allNumbers = document.querySelectorAll(".numbers");
 allNumbers.forEach(number => {
     number.addEventListener('click', (e) => {
-        //Number to operation goes in here
+        numberEventHandler(number.textContent);
     })
 })
 
 let allOperations = document.querySelectorAll(".operations");
 allOperations.forEach(operation => {
-    if (operation.textContent == "AC") {
-        operation.addEventListener('click', (e) => {
-            // AC Function call
-        })
-    }
-
-    if (operation.textContent == "x") {
-        operation.addEventListener('click', (e) => {
-            // Multiply Function call
-        })
-    }
-
-    if (operation.textContent == "/") {
-        operation.addEventListener('click', (e) => {
-            // Divide Function call
-        })
-    }
-
-    if (operation.textContent == "+") {
-        operation.addEventListener('click', (e) => {
-            // Plus Function call
-        })
-    }
-
-    if (operation.textContent == "-") {
-        operation.addEventListener('click', (e) => {
-            // Minus Function call
-        })
-    }
-
-    if (operation.textContent == ".") {
-        operation.addEventListener('click', (e) => {
-            // Decimal Function call
-        })
-    }
-
-    if (operation.textContent == "=") {
-        operation.addEventListener('click', (e) => {
-            // Equals Function call
-        })
-    }
+    operation.addEventListener('click', (e) => {
+        operationEventHandler(operation.textContent);
+    })
 })
 
+function numberEventHandler(number) {
+    if (number == 0 && screenDisplay.firstNumber == 0) return;
+
+    if (screenDisplay.operation === "") {
+        screenDisplay.firstNumber += number;
+        updateDisplay();
+    }
+    else if (number == 0 && screenDisplay.secondNumber == 0) return 
+    else {
+        screenDisplay.secondNumber += number;
+        updateDisplay();
+    }
+}
 /*
 // PRESSING NUMBER
 press a number 
@@ -68,16 +69,77 @@ if getOperation === "", add to firstNumber, update display
     else add to secondNumber, update display.
 */
 
+function operationEventHandler(operation) {
+    switch (operation) {
+        case "AC":
+            allClear();
+            break;
+
+        case "x":
+            if (screenDisplay.operation == "") {
+                screenDisplay.operation = "x";
+                updateDisplay();
+            }
+            else {
+                //operate()
+            }
+
+        case "/":
+            if (screenDisplay.operation == "") {
+                screenDisplay.operation = "/";
+                updateDisplay();
+            }
+            else {
+                //operate()
+            }
+
+        case "+":
+            if (screenDisplay.operation == "") {
+                screenDisplay.operation = "+";
+                updateDisplay();
+            }
+            else {
+                //operate()
+            }
+
+        case "-":
+            if (screenDisplay.operation == "") {
+                screenDisplay.operation = "-";
+                updateDisplay();
+            }
+            else {
+                //operate()
+            }
+
+        case "=": {
+            if (screenDisplay.secondNumber != "") {
+                screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
+                updateDisplay();
+            }
+        }
+
+    }
+}
+
+function allClear() {
+    screenDisplay.firstNumber = "";
+    screenDisplay.secondNumber = "";
+    screenDisplay.operation = "";
+    updateDisplay();
+}
+
 /*
 // PRESSING OPERATION
-if getOperation === "", setOperation = operationPressed.
-if getOperation !== "", operate(), and then setOperation = operationPressed.
+if getOperation === "", setOperation = operationPressed, update display.
 
-if setOperation == ("="), operate() 
+if getOperation !== "" && secondNumber !== "", operate(), and then setOperation = operationPressed.
+    else: setOperation = operationPressed.
+
+if operationPressed == ("="), operate(), setOperation = "".
+
+if operationPressed == ("AC"), reset all variables.
 
 */
-
-//Need to think of a way to handle the display updates when buttons or operations are pressed.
 
 /*
 event listeners for each button.
@@ -95,17 +157,16 @@ event listeners for each button.
             - set display to equal the chosen functions return value.    
 */
 
-let num1, num2 = 0;
-let operation = "";
-
 function operate(num1, num2, operation) {
+    allClear();
+    num1 = Number(num1), num2 = Number(num2); 
     if (operation === "+") {
         return add(num1, num2);
     }
     else if (operation === "-") {
         return subtract(num1, num2);
     }
-    else if (operation === "*") {
+    else if (operation === "x") {
         return multiply(num1, num2);
     }
     else if (operation === "/") {
