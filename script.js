@@ -49,13 +49,14 @@ allOperations.forEach(operation => {
 })
 
 function numberEventHandler(number) {
-    if (number == 0 && screenDisplay.firstNumber == 0) return;
+    if (number == 0 && screenDisplay.firstNumber === "0") return;
 
     if (screenDisplay.operation === "") {
         screenDisplay.firstNumber += number;
         updateDisplay();
     }
-    else if (number == 0 && screenDisplay.secondNumber == 0) return 
+
+    else if (number == 0 && screenDisplay.secondNumber === "0") return;//get it to enter 0 / 0
     else {
         screenDisplay.secondNumber += number;
         updateDisplay();
@@ -76,48 +77,63 @@ function operationEventHandler(operation) {
             break;
 
         case "x":
+            //Display "x" operation if operator is empty.
             if (screenDisplay.operation == "") {
                 screenDisplay.operation = "x";
                 updateDisplay();
             }
-            else {
-                //operate()
+            //operate(), set operation to "x" otherwise.
+            else if (screenDisplay.operation !== "") {
+                operateAndSetFirstNumber();
+                screenDisplay.operation = "x";
+                updateDisplay();
+
             }
+            break;
 
         case "/":
             if (screenDisplay.operation == "") {
                 screenDisplay.operation = "/";
                 updateDisplay();
             }
-            else {
-                //operate()
+            else if (screenDisplay.operation !== "") {
+                operateAndSetFirstNumber();
+                screenDisplay.operation = "/";
+                updateDisplay();
             }
+            break;
 
         case "+":
             if (screenDisplay.operation == "") {
                 screenDisplay.operation = "+";
                 updateDisplay();
             }
-            else {
-                //operate()
+            else if (screenDisplay.operation !== "") {
+                operateAndSetFirstNumber();
+                screenDisplay.operation = "+";
+                updateDisplay();
             }
+            break;
 
         case "-":
             if (screenDisplay.operation == "") {
                 screenDisplay.operation = "-";
                 updateDisplay();
             }
-            else {
-                //operate()
+            else if (screenDisplay.operation !== "") {
+                operateAndSetFirstNumber();
+                screenDisplay.operation = "-";
+                updateDisplay();
             }
+            break;
 
         case "=": {
             if (screenDisplay.secondNumber != "") {
                 screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
                 updateDisplay();
             }
+            break;
         }
-
     }
 }
 
@@ -126,6 +142,10 @@ function allClear() {
     screenDisplay.secondNumber = "";
     screenDisplay.operation = "";
     updateDisplay();
+}
+
+function operateAndSetFirstNumber() {
+    screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
 }
 
 /*
@@ -158,8 +178,10 @@ event listeners for each button.
 */
 
 function operate(num1, num2, operation) {
+    if (screenDisplay.secondNumber == "") return;
+
     allClear();
-    num1 = Number(num1), num2 = Number(num2); 
+    num1 = Number(num1), num2 = Number(num2);
     if (operation === "+") {
         return add(num1, num2);
     }
