@@ -1,6 +1,6 @@
 let screenDisplay = {
 
-    number1: "",
+    number1: "0",
     number2: "",
     operation: "",
 
@@ -24,13 +24,7 @@ let screenDisplay = {
 screenDiv = document.querySelector("#screen");
 
 function updateDisplay() {
-
-    if (screenDisplay.firstNumber === "") {
-        screenDiv.textContent = "0"
-    }
-    else {
-        screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
-    }
+    screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
 }
 updateDisplay();
 
@@ -49,26 +43,63 @@ allOperations.forEach(operation => {
 })
 
 function numberEventHandler(number) {
-    if (number == 0 && screenDisplay.firstNumber === "0") return;
 
-    if (screenDisplay.operation === "") {
-        screenDisplay.firstNumber += number;
-        updateDisplay();
+    if (screenDisplay.operation == "") {
+
+        // If 0 is pressed, and firstNumber is 0, and operation isn't set = can't enter more 0's in firstNumber.
+        if (number === "0" && screenDisplay.firstNumber === "0") {
+            console.log("no more 0's in firstNumber")
+            return;
+        }
+
+        // Any number pressed, and firstNumber is 0 = replace display with pressed number.
+        else if (number !== "0" && screenDisplay.firstNumber === "0") {
+            screenDisplay.firstNumber = "";
+            screenDisplay.firstNumber += number;
+            updateDisplay();
+            return;
+        }
+
+        // Any number pressed while operation isn't set = enter number in firstNumber.
+        else {
+            screenDisplay.firstNumber += number;
+            updateDisplay();
+            return;
+        }
     }
 
-    else if (number == 0 && screenDisplay.secondNumber === "0") return;//get it to enter 0 / 0
-    else {
-        screenDisplay.secondNumber += number;
-        updateDisplay();
+    //Logic for entering second number.
+    else if (screenDisplay.operation !== "") {
+
+        // If 0 is pressed, operation is set, and secondNumber is 0 = can't enter more 0's.
+        if (number === "0" && screenDisplay.secondNumber == "0") {
+            console.log("no more 0's in secondNumber")
+            return;
+        }
+
+        // Any number pressed, and secondNumber is 0 = replace display with pressed number.
+        else if (number !== "0" && screenDisplay.secondNumber === "0") {
+            screenDisplay.secondNumber = "";
+            screenDisplay.secondNumber += number;
+            updateDisplay();
+            return;
+        }
+
+        else if (number === "0" && screenDisplay.secondNumber == "") {
+            screenDisplay.secondNumber = "0";
+            updateDisplay();
+            return;
+        }
+
+        else {
+            screenDisplay.secondNumber += number;
+            updateDisplay();
+            return;
+        }
+
     }
+    console.log("first number = " + screenDisplay.firstNumber + " second number = " + screenDisplay.secondNumber)
 }
-/*
-// PRESSING NUMBER
-press a number 
-if number === 0 && screenDisplay === 0, do nothing.
-if getOperation === "", add to firstNumber, update display
-    else add to secondNumber, update display.
-*/
 
 function operationEventHandler(operation) {
     switch (operation) {
@@ -129,7 +160,7 @@ function operationEventHandler(operation) {
 
         case "=": {
             if (screenDisplay.secondNumber != "") {
-                screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
+                screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation))
                 updateDisplay();
             }
             break;
@@ -138,14 +169,14 @@ function operationEventHandler(operation) {
 }
 
 function allClear() {
-    screenDisplay.firstNumber = "";
+    screenDisplay.firstNumber = "0";
     screenDisplay.secondNumber = "";
     screenDisplay.operation = "";
     updateDisplay();
 }
 
 function operateAndSetFirstNumber() {
-    screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
+    screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation))
 }
 
 /*
@@ -178,7 +209,9 @@ event listeners for each button.
 */
 
 function operate(num1, num2, operation) {
-    if (screenDisplay.secondNumber == "") return;
+    if (screenDisplay.secondNumber == "") {
+        return;
+    }
 
     allClear();
     num1 = Number(num1), num2 = Number(num2);
