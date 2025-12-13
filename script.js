@@ -22,10 +22,7 @@ let screenDisplay = {
 }
 
 screenDiv = document.querySelector("#screen");
-
-function updateDisplay() {
-    screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
-}
+decimalButton = document.querySelector("#decimal_button");
 updateDisplay();
 
 let allNumbers = document.querySelectorAll(".numbers");
@@ -41,6 +38,28 @@ allOperations.forEach(operation => {
         operationEventHandler(operation.textContent);
     })
 })
+
+function updateDisplay() {
+    if (screenDisplay.operation == "" && screenDisplay.firstNumber.includes(".")) {
+        decimalButton.disabled = true;
+        console.log("disabled");
+    }
+    if (screenDisplay.firstNumber.includes(".") && screenDisplay.operation !== "") {
+        decimalButton.disabled = false;
+        console.log("enabled!")
+    }
+
+    if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes(".")) {
+        decimalButton.disabled = true;
+        console.log("disabled");
+    }
+    if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes()) {
+        decimalButton.disabled = false;
+        console.log("enabled!");
+    }
+
+    screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
+}
 
 function numberEventHandler(number) {
 
@@ -165,6 +184,18 @@ function operationEventHandler(operation) {
             }
             break;
         }
+
+        case ".": {
+            if (screenDisplay.operation == "") {
+                screenDisplay.firstNumber = screenDisplay.firstNumber.slice(0, 1) + "." + screenDisplay.firstNumber.slice(1);
+                updateDisplay();
+            }
+            else {
+                screenDisplay.secondNumber = screenDisplay.secondNumber.slice(0, 1) + "." + screenDisplay.secondNumber.slice(1);
+                updateDisplay();
+            }
+            break;
+        }
     }
 }
 
@@ -172,41 +203,13 @@ function allClear() {
     screenDisplay.firstNumber = "0";
     screenDisplay.secondNumber = "";
     screenDisplay.operation = "";
+    decimalButton.disabled = false;
     updateDisplay();
 }
 
 function operateAndSetFirstNumber() {
     screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation))
 }
-
-/*
-// PRESSING OPERATION
-if getOperation === "", setOperation = operationPressed, update display.
-
-if getOperation !== "" && secondNumber !== "", operate(), and then setOperation = operationPressed.
-    else: setOperation = operationPressed.
-
-if operationPressed == ("="), operate(), setOperation = "".
-
-if operationPressed == ("AC"), reset all variables.
-
-*/
-
-/*
-event listeners for each button.
-    Numbers 
-        - add button.textContent into first/second number variable.
-    Operations 
-        - CE Reset all variables.
-        - (+,-,x,/) setOperation to corresponding operationPressed.
-            - if getOperation !== "":
-                - store operationPressed in a temp value(?)
-                - operate()
-                - add result to display
-                - set chosenOperation to the newly pressed operation.
-        - (=) check if both numbers exist.
-            - set display to equal the chosen functions return value.    
-*/
 
 function operate(num1, num2, operation) {
     if (screenDisplay.secondNumber == "") {
