@@ -42,21 +42,22 @@ allOperations.forEach(operation => {
 function updateDisplay() {
     if (screenDisplay.operation == "" && screenDisplay.firstNumber.includes(".")) {
         decimalButton.disabled = true;
-        console.log("disabled");
+
     }
     if (screenDisplay.firstNumber.includes(".") && screenDisplay.operation !== "") {
         decimalButton.disabled = false;
-        console.log("enabled!")
     }
 
     if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes(".")) {
         decimalButton.disabled = true;
-        console.log("disabled");
     }
     if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes()) {
         decimalButton.disabled = false;
-        console.log("enabled!");
     }
+
+    if (screenDisplay.firstNumber == "") screenDisplay.firstNumber = "0";
+
+    //console.log(`First Number: ${screenDisplay.firstNumber} Operation: ${screenDisplay.operation} Second Number: ${screenDisplay.secondNumber}`)
 
     screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
 }
@@ -137,7 +138,6 @@ function operationEventHandler(operation) {
                 operateAndSetFirstNumber();
                 screenDisplay.operation = "x";
                 updateDisplay();
-
             }
             break;
 
@@ -199,6 +199,28 @@ function operationEventHandler(operation) {
     }
 }
 
+backspaceButton = document.querySelector('#backspace');
+backspaceButton.addEventListener('click', (e) => {
+    backspacePressed();
+})
+
+function backspacePressed() {
+    if (screenDisplay.operation !== "" && screenDisplay.secondNumber == "") {
+        //delete operation
+        screenDisplay.operation = "";
+        updateDisplay();
+    }
+    else if (screenDisplay.operation !== "") {
+        //delete last char of secondNo
+        screenDisplay.secondNumber = screenDisplay.secondNumber.slice(0, -1);
+        updateDisplay();
+    }
+    else if (screenDisplay.operation == "") {
+        //delete last char of firstNo
+        screenDisplay.firstNumber = screenDisplay.firstNumber.slice(0, -1);
+        updateDisplay();
+    }
+}
 
 function allClear() {
     screenDisplay.firstNumber = "0";
