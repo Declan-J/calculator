@@ -179,7 +179,7 @@ function operationEventHandler(operation) {
 
         case "=": {
             if (screenDisplay.secondNumber != "") {
-                screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation))
+                screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
                 updateDisplay();
             }
             break;
@@ -199,6 +199,7 @@ function operationEventHandler(operation) {
     }
 }
 
+
 function allClear() {
     screenDisplay.firstNumber = "0";
     screenDisplay.secondNumber = "";
@@ -208,7 +209,7 @@ function allClear() {
 }
 
 function operateAndSetFirstNumber() {
-    screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation))
+    screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation);
 }
 
 function operate(num1, num2, operation) {
@@ -233,20 +234,20 @@ function operate(num1, num2, operation) {
 }
 
 function add(num1, num2) {
-    return num1 + num2;
+    return (num1 + num2).toFixed(10);
 }
 
 function subtract(num1, num2) {
-    return num1 - num2;
+    return (num1 - num2).toFixed(10);
 }
 
 function multiply(num1, num2) {
-    return num1 * num2;
+    return (num1 * num2).toFixed(10);
 }
 
 function divide(num1, num2) {
     if (num1 === 0 && num2 === 0) {
         return 5318008
     }
-    else return num1 / num2;
+    else return (num1 / num2).toFixed(10);
 }
