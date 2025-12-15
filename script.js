@@ -40,23 +40,26 @@ allOperations.forEach(operation => {
 })
 
 function updateDisplay() {
+    // Operation empty, firstNumber has a "." - DISABLE
     if (screenDisplay.operation == "" && screenDisplay.firstNumber.includes(".")) {
         decimalButton.disabled = true;
     }
-    if (screenDisplay.firstNumber.includes(".") && screenDisplay.operation !== "") {
+
+    // Operation present, secondNumber isn't empty - ENABLE
+    if (screenDisplay.firstNumber.includes(".") && screenDisplay.secondNumber !== "") {
         decimalButton.disabled = false;
     }
 
+    //Operation present, secondNumber has a "." - DISABLE
     if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes(".")) {
         decimalButton.disabled = true;
     }
-    if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes()) {
+
+    if(!screenDisplay.firstNumber.includes(".")) {
         decimalButton.disabled = false;
     }
 
     if (screenDisplay.firstNumber == "") screenDisplay.firstNumber = "0";
-
-    //console.log(`First Number: ${screenDisplay.firstNumber} Operation: ${screenDisplay.operation} Second Number: ${screenDisplay.secondNumber}`)
 
     screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
 }
@@ -202,7 +205,7 @@ function operationEventHandler(operation) {
 
         case "=": {
             if (screenDisplay.secondNumber != "") {
-                screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation)
+                screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation));
                 updateDisplay();
             }
             break;
@@ -225,23 +228,21 @@ function operationEventHandler(operation) {
 backspaceButton = document.querySelector('#backspace');
 backspaceButton.addEventListener('click', (e) => {
     backspacePressed();
+    updateDisplay();
 })
 
 function backspacePressed() {
     if (screenDisplay.operation !== "" && screenDisplay.secondNumber == "") {
         //delete operation
         screenDisplay.operation = "";
-        updateDisplay();
     }
     else if (screenDisplay.operation !== "") {
         //delete last char of secondNo
         screenDisplay.secondNumber = screenDisplay.secondNumber.slice(0, -1);
-        updateDisplay();
     }
     else if (screenDisplay.operation == "") {
         //delete last char of firstNo
         screenDisplay.firstNumber = screenDisplay.firstNumber.slice(0, -1);
-        updateDisplay();
     }
 }
 
@@ -254,7 +255,7 @@ function allClear() {
 }
 
 function operateAndSetFirstNumber() {
-    screenDisplay.firstNumber = operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation);
+    screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation));
 }
 
 function operate(num1, num2, operation) {
@@ -279,20 +280,20 @@ function operate(num1, num2, operation) {
 }
 
 function add(num1, num2) {
-    return (num1 + num2).toFixed(10);
+    return Number((num1 + num2).toFixed(10));
 }
 
 function subtract(num1, num2) {
-    return (num1 - num2).toFixed(10);
+    return Number((num1 - num2).toFixed(10));
 }
 
 function multiply(num1, num2) {
-    return (num1 * num2).toFixed(10);
+    return Number((num1 * num2).toFixed(10));
 }
 
 function divide(num1, num2) {
     if (num1 === 0 && num2 === 0) {
-        return 5318008
+        return 5318008;
     }
-    else return (num1 / num2).toFixed(10);
+    else return Number((num1 / num2).toFixed(10));
 }
