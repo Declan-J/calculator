@@ -42,7 +42,6 @@ allOperations.forEach(operation => {
 function updateDisplay() {
     if (screenDisplay.operation == "" && screenDisplay.firstNumber.includes(".")) {
         decimalButton.disabled = true;
-
     }
     if (screenDisplay.firstNumber.includes(".") && screenDisplay.operation !== "") {
         decimalButton.disabled = false;
@@ -133,11 +132,17 @@ function operationEventHandler(operation) {
                 screenDisplay.operation = "x";
                 updateDisplay();
             }
-            //operate(), set operation to "x" otherwise.
+            //if second number is present, operate(). set operation to "x" otherwise.
             else if (screenDisplay.operation !== "") {
-                operateAndSetFirstNumber();
-                screenDisplay.operation = "x";
-                updateDisplay();
+                if (screenDisplay.secondNumber !== "") {
+                    operateAndSetFirstNumber();
+                    screenDisplay.operation = "x";
+                    updateDisplay();
+                }
+                else {
+                    screenDisplay.operation = "x";
+                    updateDisplay();
+                }
             }
             break;
 
@@ -147,9 +152,15 @@ function operationEventHandler(operation) {
                 updateDisplay();
             }
             else if (screenDisplay.operation !== "") {
-                operateAndSetFirstNumber();
-                screenDisplay.operation = "/";
-                updateDisplay();
+                if (screenDisplay.secondNumber !== "") {
+                    operateAndSetFirstNumber();
+                    screenDisplay.operation = "/";
+                    updateDisplay();
+                }
+                else {
+                    screenDisplay.operation = "/";
+                    updateDisplay();
+                }
             }
             break;
 
@@ -159,9 +170,15 @@ function operationEventHandler(operation) {
                 updateDisplay();
             }
             else if (screenDisplay.operation !== "") {
-                operateAndSetFirstNumber();
-                screenDisplay.operation = "+";
-                updateDisplay();
+                if (screenDisplay.secondNumber !== "") {
+                    operateAndSetFirstNumber();
+                    screenDisplay.operation = "+";
+                    updateDisplay();
+                }
+                else {
+                    screenDisplay.operation = "+";
+                    updateDisplay();
+                }
             }
             break;
 
@@ -171,9 +188,15 @@ function operationEventHandler(operation) {
                 updateDisplay();
             }
             else if (screenDisplay.operation !== "") {
-                operateAndSetFirstNumber();
-                screenDisplay.operation = "-";
-                updateDisplay();
+                if (screenDisplay.secondNumber !== "") {
+                    operateAndSetFirstNumber();
+                    screenDisplay.operation = "-";
+                    updateDisplay();
+                }
+                else {
+                    screenDisplay.operation = "-";
+                    updateDisplay();
+                }
             }
             break;
 
