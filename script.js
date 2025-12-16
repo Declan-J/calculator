@@ -25,6 +25,29 @@ screenDiv = document.querySelector("#screen");
 decimalButton = document.querySelector("#decimal_button");
 updateDisplay();
 
+document.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+    if (e.key == "*") multiplyOperation();
+    if (e.key == "/") divideOperation();
+    if (e.key == "+") plusOperation();
+    if (e.key == "-") minusOperation();
+    if (e.key == ".") decimalOperation();
+    if (e.key == "=" || e.key == "Enter") equalsOperation();
+    if (e.key == "Backspace") backspacePressed();
+    if (e.key == "Escape") allClear();
+    
+    if (e.key == "0") numberEventHandler("0");
+    if (e.key == "1") numberEventHandler("1");
+    if (e.key == "2") numberEventHandler("2");
+    if (e.key == "3") numberEventHandler("3");
+    if (e.key == "4") numberEventHandler("4");
+    if (e.key == "5") numberEventHandler("5");
+    if (e.key == "6") numberEventHandler("6");
+    if (e.key == "7") numberEventHandler("7");
+    if (e.key == "8") numberEventHandler("8");
+    if (e.key == "9") numberEventHandler("9");
+})
+
 let allNumbers = document.querySelectorAll(".numbers");
 allNumbers.forEach(number => {
     number.addEventListener('click', (e) => {
@@ -50,17 +73,20 @@ function updateDisplay() {
         decimalButton.disabled = false;
     }
 
-    //Operation present, secondNumber has a "." - DISABLE
+    // Operation present, secondNumber has a "." - DISABLE
     if (screenDisplay.operation !== "" && screenDisplay.secondNumber.includes(".")) {
         decimalButton.disabled = true;
     }
 
-    if(!screenDisplay.firstNumber.includes(".")) {
+    // If there is no decimal in firstNumber - ENABLE
+    if (!screenDisplay.firstNumber.includes(".")) {
         decimalButton.disabled = false;
     }
 
+    // If firstNumber is blank, change it to "0".
     if (screenDisplay.firstNumber == "") screenDisplay.firstNumber = "0";
 
+    // Change display div
     screenDiv.textContent = `${screenDisplay.firstNumber} ${screenDisplay.operation} ${screenDisplay.secondNumber}`;
 }
 
@@ -129,106 +155,127 @@ function operationEventHandler(operation) {
             allClear();
             break;
 
-        case "x":
-            //Display "x" operation if operator is empty.
-            if (screenDisplay.operation == "") {
-                screenDisplay.operation = "x";
-                updateDisplay();
-            }
-            //if second number is present, operate(). set operation to "x" otherwise.
-            else if (screenDisplay.operation !== "") {
-                if (screenDisplay.secondNumber !== "") {
-                    operateAndSetFirstNumber();
-                    screenDisplay.operation = "x";
-                    updateDisplay();
-                }
-                else {
-                    screenDisplay.operation = "x";
-                    updateDisplay();
-                }
-            }
+        case "*":
+            multiplyOperation();
             break;
 
         case "/":
-            if (screenDisplay.operation == "") {
-                screenDisplay.operation = "/";
-                updateDisplay();
-            }
-            else if (screenDisplay.operation !== "") {
-                if (screenDisplay.secondNumber !== "") {
-                    operateAndSetFirstNumber();
-                    screenDisplay.operation = "/";
-                    updateDisplay();
-                }
-                else {
-                    screenDisplay.operation = "/";
-                    updateDisplay();
-                }
-            }
+            divideOperation();
             break;
 
         case "+":
-            if (screenDisplay.operation == "") {
-                screenDisplay.operation = "+";
-                updateDisplay();
-            }
-            else if (screenDisplay.operation !== "") {
-                if (screenDisplay.secondNumber !== "") {
-                    operateAndSetFirstNumber();
-                    screenDisplay.operation = "+";
-                    updateDisplay();
-                }
-                else {
-                    screenDisplay.operation = "+";
-                    updateDisplay();
-                }
-            }
+            plusOperation();
             break;
 
         case "-":
-            if (screenDisplay.operation == "") {
-                screenDisplay.operation = "-";
-                updateDisplay();
-            }
-            else if (screenDisplay.operation !== "") {
-                if (screenDisplay.secondNumber !== "") {
-                    operateAndSetFirstNumber();
-                    screenDisplay.operation = "-";
-                    updateDisplay();
-                }
-                else {
-                    screenDisplay.operation = "-";
-                    updateDisplay();
-                }
-            }
+            minusOperation();
             break;
 
-        case "=": {
-            if (screenDisplay.secondNumber != "") {
-                screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation));
-                updateDisplay();
-            }
+        case "=":
+            equalsOperation();
             break;
-        }
 
-        case ".": {
-            if (screenDisplay.operation == "") {
-                screenDisplay.firstNumber = screenDisplay.firstNumber.slice(0, 1) + "." + screenDisplay.firstNumber.slice(1);
-                updateDisplay();
-            }
-            else {
-                screenDisplay.secondNumber = screenDisplay.secondNumber.slice(0, 1) + "." + screenDisplay.secondNumber.slice(1);
-                updateDisplay();
-            }
+        case ".":
+            decimalOperation();
             break;
+    }
+}
+
+function multiplyOperation() {
+    //Display "*" operation if operator is empty.
+    if (screenDisplay.operation == "") {
+        screenDisplay.operation = "*";
+        updateDisplay();
+    }
+    //if second number is present, operate(). set operation to "*" otherwise.
+    else if (screenDisplay.operation !== "") {
+        if (screenDisplay.secondNumber !== "") {
+            operateAndSetFirstNumber();
+            screenDisplay.operation = "*";
+            updateDisplay();
         }
+        else {
+            screenDisplay.operation = "*";
+            updateDisplay();
+        }
+    }
+}
+
+function divideOperation() {
+    if (screenDisplay.operation == "") {
+        screenDisplay.operation = "/";
+        updateDisplay();
+    }
+    else if (screenDisplay.operation !== "") {
+        if (screenDisplay.secondNumber !== "") {
+            operateAndSetFirstNumber();
+            screenDisplay.operation = "/";
+            updateDisplay();
+        }
+        else {
+            screenDisplay.operation = "/";
+            updateDisplay();
+        }
+    }
+}
+
+function plusOperation() {
+    if (screenDisplay.operation == "") {
+        screenDisplay.operation = "+";
+        updateDisplay();
+    }
+    else if (screenDisplay.operation !== "") {
+        if (screenDisplay.secondNumber !== "") {
+            operateAndSetFirstNumber();
+            screenDisplay.operation = "+";
+            updateDisplay();
+        }
+        else {
+            screenDisplay.operation = "+";
+            updateDisplay();
+        }
+    }
+}
+
+function minusOperation() {
+    if (screenDisplay.operation == "") {
+        screenDisplay.operation = "-";
+        updateDisplay();
+    }
+    else if (screenDisplay.operation !== "") {
+        if (screenDisplay.secondNumber !== "") {
+            operateAndSetFirstNumber();
+            screenDisplay.operation = "-";
+            updateDisplay();
+        }
+        else {
+            screenDisplay.operation = "-";
+            updateDisplay();
+        }
+    }
+}
+
+function equalsOperation() {
+    if (screenDisplay.secondNumber != "") {
+        screenDisplay.firstNumber = String(operate(screenDisplay.firstNumber, screenDisplay.secondNumber, screenDisplay.operation));
+        updateDisplay();
+    }
+}
+
+function decimalOperation() {
+    if (screenDisplay.operation == "") {
+        screenDisplay.firstNumber = screenDisplay.firstNumber.slice(0, 1) + "." + screenDisplay.firstNumber.slice(1);
+        updateDisplay();
+    }
+    else {
+        screenDisplay.secondNumber = screenDisplay.secondNumber.slice(0, 1) + "." + screenDisplay.secondNumber.slice(1);
+        updateDisplay();
     }
 }
 
 backspaceButton = document.querySelector('#backspace');
 backspaceButton.addEventListener('click', (e) => {
     backspacePressed();
-    updateDisplay();
 })
 
 function backspacePressed() {
@@ -244,6 +291,7 @@ function backspacePressed() {
         //delete last char of firstNo
         screenDisplay.firstNumber = screenDisplay.firstNumber.slice(0, -1);
     }
+    updateDisplay();
 }
 
 function allClear() {
@@ -271,7 +319,7 @@ function operate(num1, num2, operation) {
     else if (operation === "-") {
         return subtract(num1, num2);
     }
-    else if (operation === "x") {
+    else if (operation === "*") {
         return multiply(num1, num2);
     }
     else if (operation === "/") {
