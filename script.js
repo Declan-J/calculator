@@ -1,3 +1,5 @@
+//TODO: Limit Display input or wrap display so it doesn't pull the display off-screen.
+
 let screenDisplay = {
 
     number1: "0",
